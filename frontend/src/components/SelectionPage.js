@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import apiClient from '../utils/apiClient';
 
 // SignPage component with a form to collect user details
 const SignPage = () => {
@@ -22,7 +22,7 @@ const SignPage = () => {
 
   // Fetch counties on component mount
   useEffect(() => {
-    axios.get('/api/counties/')
+    apiClient.get('/api/counties/')
       .then(response => {
         setCounties(response.data);
         console.log(response.data)
@@ -35,7 +35,7 @@ const SignPage = () => {
 // Handle change for county dropdown
 const handleCountyChange = (e) => {
   setForm({ ...form, county: e.target.value });
-  axios.get(`/api/counties/${e.target.value}/constituencies`)
+  apiClient.get(`/api/counties/${e.target.value}/constituencies`)
     .then(response => setConstituencies(response.data))
     .catch(error => {
       console.error('Error fetching constituencies:', error);
@@ -46,7 +46,7 @@ const handleCountyChange = (e) => {
 // Handle change for constituency dropdown
 const handleConstituencyChange = (e) => {
   setForm({ ...form, constituency: e.target.value });
-  axios.get(`/api/constituencies/${e.target.value}/wards`)
+  apiClient.get(`/api/constituencies/${e.target.value}/wards`)
     .then(response => setWards(response.data))
     .catch(error => {
       console.error('Error fetching wards:', error);
@@ -57,7 +57,7 @@ const handleConstituencyChange = (e) => {
 // Handle change for ward dropdown
 const handleWardChange = (e) => {
   setForm({ ...form, ward: e.target.value });
-  axios.get(`/api/wards/${e.target.value}/polling_stations`)
+  apiClient.get(`/api/wards/${e.target.value}/polling_stations`)
     .then(response => setPollingStations(response.data))
     .catch(error => {
       console.error('Error fetching polling stations:', error);
@@ -69,7 +69,7 @@ const handleWardChange = (e) => {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('/api/entries', form)
+    apiClient.post('/api/entries', form)
       .then(response => {
         console.log('Form submitted successfully');
       })
