@@ -22,37 +22,66 @@ const SignPage = () => {
 
   // Fetch counties on component mount
   useEffect(() => {
-    axios.get('/api/counties').then(response => setCounties(response.data));
+    axios.get('/api/counties/')
+      .then(response => {
+        setCounties(response.data);
+        console.log(response.data)
+      })
+      .catch(error => {
+        console.error('Error fetching counties:', error);
+      });
   }, []);
 
-  // Handle change for county dropdown
-  const handleCountyChange = (e) => {
-    setForm({ ...form, county: e.target.value });
-    // Fetch constituencies based on selected county
-    axios.get(`/api/counties/${e.target.value}/constituencies`).then(response => setConstituencies(response.data));
-  };
+// Handle change for county dropdown
+const handleCountyChange = (e) => {
+  setForm({ ...form, county: e.target.value });
+  axios.get(`/api/counties/${e.target.value}/constituencies`)
+    .then(response => setConstituencies(response.data))
+    .catch(error => {
+      console.error('Error fetching constituencies:', error);
+      // Handle error, e.g., display an error message to the user
+    });
+};
 
-  // Handle change for constituency dropdown
-  const handleConstituencyChange = (e) => {
-    setForm({ ...form, constituency: e.target.value });
-    // Fetch wards based on selected constituency
-    axios.get(`/api/constituencies/${e.target.value}/wards`).then(response => setWards(response.data));
-  };
+// Handle change for constituency dropdown
+const handleConstituencyChange = (e) => {
+  setForm({ ...form, constituency: e.target.value });
+  axios.get(`/api/constituencies/${e.target.value}/wards`)
+    .then(response => setWards(response.data))
+    .catch(error => {
+      console.error('Error fetching wards:', error);
+      // Handle error, e.g., display an error message to the user
+    });
+};
 
-  // Handle change for ward dropdown
-  const handleWardChange = (e) => {
-    setForm({ ...form, ward: e.target.value });
-    // Fetch polling stations based on selected ward
-    axios.get(`/api/wards/${e.target.value}/polling_stations`).then(response => setPollingStations(response.data));
-  };
+// Handle change for ward dropdown
+const handleWardChange = (e) => {
+  setForm({ ...form, ward: e.target.value });
+  axios.get(`/api/wards/${e.target.value}/polling_stations`)
+    .then(response => setPollingStations(response.data))
+    .catch(error => {
+      console.error('Error fetching polling stations:', error);
+      // Handle error, e.g., display an error message to the user
+    });
+};
+
 
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Submit the form data to the backend
-    axios.post('/api/entries', form).then(response => {
-      console.log('Form submitted successfully');
-    });
+    axios.post('/api/entries', form)
+      .then(response => {
+        console.log('Form submitted successfully');
+      })
+      .catch(error => {
+        if (error.response && error.response.status === 400) {
+          console.error('Bad request error:', error)
+        } else if (error.response && error.response.status === 500) {
+          console.error('Server error:', error)
+        } else {
+          console.error('Other error:', error)
+        }
+      });
   };
 
   return (
