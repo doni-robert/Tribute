@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import apiClient from '../utils/apiClient';
 
 // ViewPage component to display entries and download as PDF
 const ViewPage = () => {
@@ -7,12 +7,12 @@ const ViewPage = () => {
 
   // Fetch entries on component mount
   useEffect(() => {
-    axios.get('/api/entries').then(response => setEntries(response.data));
+    apiClient.get('/api/entries').then(response => setEntries(response.data));
   }, []);
 
   // Function to download entries as PDF
   const downloadPDF = () => {
-    axios.get('/api/entries/pdf', { responseType: 'blob' }).then(response => {
+    apiClient.get('/api/entries/pdf', { responseType: 'blob' }).then(response => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;

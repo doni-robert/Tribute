@@ -49,13 +49,10 @@ class Entry(models.Model):
         signature: An ImageField storing the signature image.
         created_at: A DateTimeField storing the timestamp when the entry was created.
     """
-    NAME_MAX_LENGTH = 15
+    NAME_MAX_LENGTH = 25
     ID_MAX_LENGTH = 10
 
-    first_name = models.CharField(max_length=NAME_MAX_LENGTH)
-    second_name = models.CharField(max_length=NAME_MAX_LENGTH)
-    third_name = models.CharField(max_length=NAME_MAX_LENGTH)
-    fourth_name = models.CharField(max_length=NAME_MAX_LENGTH)
+    name = models.CharField(max_length=NAME_MAX_LENGTH, default="No Name")
     id_or_passport_number = models.CharField(max_length=ID_MAX_LENGTH)
     county = models.ForeignKey(County, on_delete=models.PROTECT)
     constituency = models.ForeignKey(Constituency, on_delete=models.PROTECT)

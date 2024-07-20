@@ -19,5 +19,5 @@ urlpatterns = [
     path('constituencies/<int:constituency_id>/wards/', WardsByConstituencyAPIView.as_view(), name='wards-by-constituency'),
     path('counties/<int:county_id>/constituencies/<int:constituency_id>/wards/<int:ward_id>/pollingstations/', PollingStationListAPIView.as_view(), name='pollingstation-list'),
     path('wards/<int:ward_id>/polling_stations/', PollingStationsByWardAPIView.as_view(), name='polling-stations-by-ward'),
-
+    path('entries/', EntryListCreateAPIView.as_view(), name='entry-list-create'),
 ]

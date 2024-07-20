@@ -17,7 +17,7 @@ const SignPage = () => {
     ward: '',
     polling_station: '',
     mobile_number: '',
-    signature: ''
+    signature: null,
   });
 
   // Fetch counties on component mount
@@ -25,7 +25,6 @@ const SignPage = () => {
     apiClient.get('/api/counties/')
       .then(response => {
         setCounties(response.data);
-        console.log(response.data)
       })
       .catch(error => {
         console.error('Error fetching counties:', error);
@@ -69,7 +68,8 @@ const handleWardChange = (e) => {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    apiClient.post('/api/entries', form)
+    console.log(form)
+    apiClient.post('/api/entries/', form)
       .then(response => {
         console.log('Form submitted successfully');
       })
@@ -129,10 +129,10 @@ const handleWardChange = (e) => {
       />
       {/* Input for Signature */}
       <input
-        type="text"
+        type="file"
         placeholder="Signature"
-        value={form.signature}
-        onChange={(e) => setForm({ ...form, signature: e.target.value })}
+        accept="image/*"
+        onChange={(e) => setForm({ ...form, signature: e.target.files[0] })}
       />
       {/* Submit Button */}
       <button type="submit">Submit</button>
